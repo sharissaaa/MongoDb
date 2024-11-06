@@ -191,34 +191,35 @@ fs.writeFile(
 */
 
 const http = require("http");
-const fs= require("fs");
-const path = require("path");
-const server = http.createServer((req,res)=>{
-    let filepath='';
-    let contentType="Text/html";
+    const fs= require("fs")
+    const path= require("path")
 
-    switch(req.url) {
-        case "/":
-            filePath=path.join(__dirname,"views","index.html");
-            break;
-        case "/contact":
-                filepath =path.join(__dirname,"views","contact.html");
-                  break;
-                default:
-                    filepath=path.join(__dirname,"views","404.html");
-                    break;
+    const server =http.createServer((req,res)=>{
+        let filepath='';
+        let contentType='text/html';
 
-
-    }
-    fs.readFile(filepath,"utf8",(err,data)=>{
-        if(err){
-            res.writeHead(500,{"content-Type":"Text/plain"});
-            return res.end("Server Error")
+        //Route handling based on url
+        switch(req.url){
+            case '/':
+                filepath=path.join(__dirname,"views","index.html")
+                break
+            case '/contact':
+                filepath=path.join(__dirname,"views","contact.html")
+                break
+            default:
+                filepath=path.join(__dirname,"views","404.html")
         }
-            res.writeHead(200,{"content-Type":contentType});
+
+        fs.readFile(filepath,"utf8",(err,data)=>{
+            if(err){
+                res.writeHead(500,{"Content-type":"text/plain"})
+                return res.end("Server Error")
+            }
+            res.writeHead(200,{"Content-type":contentType})
             res.end(data);
-        
+        });
+
     });
-});
-const PORT = process.env.PORT||3001;
-server.listen(PORT,()=>console.log(`server is runnning on ${PORT}`))
+
+    const PORT = process.env.PORT ||3001;
+    server.listen(PORT,()=>console.log(`Server is running on ${PORT}`));
