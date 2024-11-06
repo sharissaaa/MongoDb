@@ -134,7 +134,7 @@ emitter.emit("message", "User logged in again"); // Triggers the "message" event
 
 // 14. Event Emitter Example: Handling Requests and Errors
 
-const EventEmitter = require("events");
+/*const EventEmitter = require("events");
 const emitter = new EventEmitter();
 
 // Listener for "request" event
@@ -156,4 +156,37 @@ emitter.on("error", (err) => {
 // Emitting "request" events with different URLs
 emitter.emit("request", { url: "/home" });
 emitter.emit("request", { url: "/about" });
-emitter.emit("request", { url: "/error" });
+emitter.emit("request", { url: "/error" });*/
+
+// Event Emitter Example: Handling Requests and Errors
+
+
+const fs = require("fs");
+const path = require("path");
+const user = "sharissa";
+
+// 1. Write to a New File
+fs.writeFile(
+    path.join(__dirname, "/api/newfile.txt"), // Specify the new file name and path
+    `User Name: ${user}`,                    // Initial content for the file
+    (err) => {
+        if (err) throw err;
+        console.log("File has been written with initial content.");
+
+        // 2. Append Content to the File
+        fs.appendFile(
+            path.join(__dirname, "/api/newfile.txt"),
+            `\nAdditional User Info: ${user}`, // Content to append to the file
+            (err) => {
+                if (err) throw err;
+                console.log("Additional content has been appended to the file.");
+
+                // 3. Delete the File
+                fs.unlink(path.join(__dirname, "/api/newfile.txt"), (err) => {
+                    if (err) throw err;
+                    console.log("File has been deleted.");
+                });
+            }
+        );
+    }
+);
