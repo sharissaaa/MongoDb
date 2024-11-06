@@ -161,11 +161,9 @@ emitter.emit("request", { url: "/error" });*/
 // Event Emitter Example: Handling Requests and Errors
 
 
-const fs = require("fs");
-const path = require("path");
-const user = "sharissa";
 
-// 1. Write to a New File
+
+/* 1. example of code that writes to a new file, appends content to it, and then deletes the file.
 fs.writeFile(
     path.join(__dirname, "/api/newfile.txt"), // Specify the new file name and path
     `User Name: ${user}`,                    // Initial content for the file
@@ -190,3 +188,37 @@ fs.writeFile(
         );
     }
 );
+*/
+
+const http = require("http");
+const fs= require("fs");
+const path = require("path");
+const server = http.createServer((req,res)=>{
+    let filepath='';
+    let contentType="Text/html";
+
+    switch(req.url) {
+        case "/":
+            filePath=path.join(__dirname,"views","index.html");
+            break;
+        case "/contact":
+                filepath =path.join(__dirname,"views","contact.html");
+                  break;
+                default:
+                    filepath=path.join(__dirname,"views","404.html");
+                    break;
+
+
+    }
+    fs.readFile(filepath,"utf8",(err,data)=>{
+        if(err){
+            res.writeHead(500,{"content-Type":"Text/plain"});
+            return res.end("Server Error")
+        }
+            res.writeHead(200,{"content-Type":contentType});
+            res.end(data);
+        
+    });
+});
+const PORT = process.env.PORT||3001;
+server.listen(PORT,()=>console.log(`server is runnning on ${PORT}`))
